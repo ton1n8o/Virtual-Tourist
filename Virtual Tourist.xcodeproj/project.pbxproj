@@ -56,11 +56,11 @@
 		02298AB91FD8221F00320302 /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				02298ABA1FD8221F00320302 /* AppDelegate.swift */,
+				02298AC41FD8221F00320302 /* Assets.xcassets */,
 				02298AD01FD8225C00320302 /* Networking */,
 				02298ACF1FD8225000320302 /* ViewControllers */,
-				02298ABA1FD8221F00320302 /* AppDelegate.swift */,
 				02298ABE1FD8221F00320302 /* Main.storyboard */,
-				02298AC41FD8221F00320302 /* Assets.xcassets */,
 				02298AC61FD8221F00320302 /* LaunchScreen.storyboard */,
 				02298AC91FD8221F00320302 /* Info.plist */,
 				02298AC11FD8221F00320302 /* Virtual_Tourist.xcdatamodeld */,

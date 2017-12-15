@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import MapKit
 
-class TravelMapViewController: UIViewController {
-
+class TravelMapViewController: UIViewController, MKMapViewDelegate {
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        mapView.delegate = self
         // Do any additional setup after loading the view.
     }
 
@@ -21,15 +26,44 @@ class TravelMapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - Actions
+    
+    @IBAction func addPinGesture(_ sender: UILongPressGestureRecognizer) {
+        
+        if sender.state == .began {
+            
+            let location = sender.location(in: mapView)
+            let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
+            
+            print("Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = locCoord
+            
+            mapView.removeAnnotations(mapView.annotations)
+            mapView.addAnnotation(annotation)
+        }
     }
-    */
+    
+    // MARK: - MKMapViewDelegate
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let reuseId = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = .red
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+        
+        return pinView
+    }
+    
 
 }
