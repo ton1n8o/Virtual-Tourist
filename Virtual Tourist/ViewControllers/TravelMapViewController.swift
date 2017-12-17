@@ -36,6 +36,8 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
             
             print("Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
+            // TODO: testing
+            Client.shared().searchBy(latitude: locCoord.latitude, longitude: locCoord.longitude)
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = locCoord

@@ -14,8 +14,32 @@ class Client {
     
     var session = URLSession.shared
     
-    func searchByLatLon() {
+    // MARK: Shared Instance
+    
+    class func shared() -> Client {
+        struct Singleton {
+            static var shared = Client()
+        }
+        return Singleton.shared
+    }
+    
+    func searchBy(latitude: Double, longitude: Double) {
         
+        let bbox = bboxString(latitude: latitude, longitude: longitude)
+        
+        let parameters = [
+            Constants.FlickrParameterKeys.Method           : Constants.FlickrParameterValues.SearchMethod
+            , Constants.FlickrParameterKeys.APIKey         : Constants.FlickrParameterValues.APIKey
+            , Constants.FlickrParameterKeys.Format         : Constants.FlickrParameterValues.ResponseFormat
+            , Constants.FlickrParameterKeys.Extras         : Constants.FlickrParameterValues.MediumURL
+            , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
+            , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
+            , Constants.FlickrParameterKeys.BoundingBox    : bbox
+        ]
+        
+        _ = taskForGETMethod(parameters: parameters) { (data, error) in
+            print(data ?? "no data") 
+        }
     }
     
 }
@@ -25,8 +49,8 @@ extension Client {
     // MARK: - GET
     
     func taskForGETMethod(
-        _ method               : String,
-        parameters             : [String:AnyObject],
+        _ method               : String? = nil,
+        parameters             : [String: String],
         completionHandlerForGET: @escaping (_ result: Data?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 2/3. Build the URL, Configure the request */
@@ -77,7 +101,7 @@ extension Client {
     
     // MARK: Helper for Creating a URL from Parameters
     
-    private func buildURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+    private func buildURLFromParameters(_ parameters: [String: String], withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
         components.scheme = Constants.Flickr.APIScheme
@@ -86,11 +110,20 @@ extension Client {
         components.queryItems = [URLQueryItem]()
         
         for (key, value) in parameters {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            let queryItem = URLQueryItem(name: key, value: value)
             components.queryItems!.append(queryItem)
         }
         
         return components.url!
+    }
+    
+    private func bboxString(latitude: Double, longitude: Double) -> String {
+        // ensure bbox is bounded by minimum and maximums
+        let minimumLon = max(longitude - Constants.Flickr.SearchBBoxHalfWidth, Constants.Flickr.SearchLonRange.0)
+        let minimumLat = max(latitude - Constants.Flickr.SearchBBoxHalfHeight, Constants.Flickr.SearchLatRange.0)
+        let maximumLon = min(longitude + Constants.Flickr.SearchBBoxHalfWidth, Constants.Flickr.SearchLonRange.1)
+        let maximumLat = min(latitude + Constants.Flickr.SearchBBoxHalfHeight, Constants.Flickr.SearchLatRange.1)
+        return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
     }
     
     /// Show or Hide Network activity indicator.

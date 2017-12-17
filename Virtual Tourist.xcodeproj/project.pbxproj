@@ -15,6 +15,11 @@
 		02298AD21FD824A300320302 /* TravelMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02298AD11FD824A300320302 /* TravelMapViewController.swift */; };
 		0249DBD81FE541F10098D510 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249DBD71FE541F10098D510 /* Constants.swift */; };
 		0249DBDA1FE543400098D510 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249DBD91FE543400098D510 /* Client.swift */; };
+		02C94A891FE6A6DF0078CF2C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */; };
+		02C94A971FE6AAA30078CF2C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A931FE6AAA30078CF2C /* Pin.swift */; };
+		02C94A981FE6AAA30078CF2C /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */; };
+		02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A951FE6AAA30078CF2C /* Photo.swift */; };
+		02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +33,11 @@
 		02298AD11FD824A300320302 /* TravelMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelMapViewController.swift; sourceTree = "<group>"; };
 		0249DBD71FE541F10098D510 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0249DBD91FE543400098D510 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		02C94A931FE6AAA30078CF2C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		02C94A951FE6AAA30078CF2C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +73,11 @@
 				02298ABA1FD8221F00320302 /* AppDelegate.swift */,
 				0249DBD71FE541F10098D510 /* Constants.swift */,
 				02298AC41FD8221F00320302 /* Assets.xcassets */,
+				02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */,
 				02298AC11FD8221F00320302 /* Virtual_Tourist.xcdatamodeld */,
 				02298AD01FD8225C00320302 /* Networking */,
 				02298ACF1FD8225000320302 /* ViewControllers */,
+				02C94A921FE6AA8B0078CF2C /* Models */,
 				02298ABE1FD8221F00320302 /* Main.storyboard */,
 				02298AC61FD8221F00320302 /* LaunchScreen.storyboard */,
 				02298AC91FD8221F00320302 /* Info.plist */,
@@ -87,6 +99,17 @@
 				0249DBD91FE543400098D510 /* Client.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		02C94A921FE6AA8B0078CF2C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				02C94A931FE6AAA30078CF2C /* Pin.swift */,
+				02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */,
+				02C94A951FE6AAA30078CF2C /* Photo.swift */,
+				02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,9 +185,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				02298AD21FD824A300320302 /* TravelMapViewController.swift in Sources */,
+				02C94A981FE6AAA30078CF2C /* Pin+CoreDataProperties.swift in Sources */,
 				02298AC31FD8221F00320302 /* Virtual_Tourist.xcdatamodeld in Sources */,
+				02C94A971FE6AAA30078CF2C /* Pin.swift in Sources */,
 				02298ABB1FD8221F00320302 /* AppDelegate.swift in Sources */,
+				02C94A891FE6A6DF0078CF2C /* CoreDataStack.swift in Sources */,
+				02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */,
 				0249DBDA1FE543400098D510 /* Client.swift in Sources */,
+				02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */,
 				0249DBD81FE541F10098D510 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
