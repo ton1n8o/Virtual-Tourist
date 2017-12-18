@@ -20,6 +20,7 @@
 		02C94A981FE6AAA30078CF2C /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */; };
 		02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A951FE6AAA30078CF2C /* Photo.swift */; };
 		02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */; };
+		02E87A621FE7D84800163537 /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E87A611FE7D84800163537 /* ViewController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02C94A951FE6AAA30078CF2C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		02E87A611FE7D84800163537 /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				02298AC41FD8221F00320302 /* Assets.xcassets */,
 				02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */,
 				02298AC11FD8221F00320302 /* Virtual_Tourist.xcdatamodeld */,
+				02E87A601FE7D7FD00163537 /* Extensions */,
 				02298AD01FD8225C00320302 /* Networking */,
 				02298ACF1FD8225000320302 /* ViewControllers */,
 				02C94A921FE6AA8B0078CF2C /* Models */,
@@ -110,6 +113,14 @@
 				02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		02E87A601FE7D7FD00163537 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				02E87A611FE7D84800163537 /* ViewController+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,6 +197,7 @@
 			files = (
 				02298AD21FD824A300320302 /* TravelMapViewController.swift in Sources */,
 				02C94A981FE6AAA30078CF2C /* Pin+CoreDataProperties.swift in Sources */,
+				02E87A621FE7D84800163537 /* ViewController+Extensions.swift in Sources */,
 				02298AC31FD8221F00320302 /* Virtual_Tourist.xcdatamodeld in Sources */,
 				02C94A971FE6AAA30078CF2C /* Pin.swift in Sources */,
 				02298ABB1FD8221F00320302 /* AppDelegate.swift in Sources */,

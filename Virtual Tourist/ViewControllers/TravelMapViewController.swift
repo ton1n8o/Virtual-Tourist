@@ -15,10 +15,15 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    // MARK: - Variables
+    
+    var pinTapped: Pin?
+    
+    // MARK: - UIViewController lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,7 +41,7 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
             
             print("Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
-            // TODO: testing
+            saveLocation(latitude: locCoord.latitude, longitude: locCoord.longitude)
             Client.shared().searchBy(latitude: locCoord.latitude, longitude: locCoord.longitude)
             
             let annotation = MKPointAnnotation()
@@ -44,6 +49,17 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             
             mapView.removeAnnotations(mapView.annotations)
             mapView.addAnnotation(annotation)
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func saveLocation(latitude: Double, longitude: Double) {
+        let pin = Pin(latitude: latitude, longitude: longitude, context: coreDataStack.context)
+        do {
+            try coreDataStack.saveContext()
+        } catch {
+            showInfo(withTitle: "Error", withMessage: "Error while saving Pin location: \(error)")
         }
     }
     
@@ -57,15 +73,27 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
+            pinView!.canShowCallout = false
             pinView!.pinTintColor = .red
-        }
-        else {
+        } else {
             pinView!.annotation = annotation
         }
         
         return pinView
     }
     
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            self.showInfo(withMessage: "No link defined.")
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation else {
+            return
+        }
+        mapView.deselectAnnotation(annotation, animated: true)
+        print("pin selected: lat \(annotation.coordinate.latitude) lon \(annotation.coordinate.longitude)")
+    }
 
 }
