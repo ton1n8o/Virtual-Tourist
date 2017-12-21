@@ -40,9 +40,16 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             let location = sender.location(in: mapView)
             let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
             
-            print("Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
-            saveLocation(latitude: locCoord.latitude, longitude: locCoord.longitude)
-            Client.shared().searchBy(latitude: locCoord.latitude, longitude: locCoord.longitude)
+            print("addPinGesture: Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
+        
+            _ = Pin(
+                latitude: String(locCoord.latitude),
+                longitude: String(locCoord.longitude),
+                context: coreDataStack.context
+            )
+            save()
+            
+            // Client.shared().searchBy(latitude: locCoord.latitude, longitude: locCoord.longitude)
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = locCoord
@@ -54,13 +61,23 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - Helpers
     
-    private func saveLocation(latitude: Double, longitude: Double) {
-        let pin = Pin(latitude: latitude, longitude: longitude, context: coreDataStack.context)
+    private func save() {
         do {
             try coreDataStack.saveContext()
         } catch {
             showInfo(withTitle: "Error", withMessage: "Error while saving Pin location: \(error)")
         }
+    }
+    
+    private func loadPin(latitude: String, longitude: String) {
+        let predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
+        var pins: [Pin]!
+        do {
+            try pins = coreDataStack.fetchPin(predicate, entityName: Pin.name)
+        } catch {
+            print("error:\(error)")
+        }
+        print(pins)
     }
     
     // MARK: - MKMapViewDelegate
@@ -94,6 +111,10 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         }
         mapView.deselectAnnotation(annotation, animated: true)
         print("pin selected: lat \(annotation.coordinate.latitude) lon \(annotation.coordinate.longitude)")
+        loadPin(
+            latitude: String(annotation.coordinate.latitude),
+            longitude: String(annotation.coordinate.longitude)
+        )
     }
 
 }

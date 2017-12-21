@@ -2,7 +2,7 @@
 //  Pin+CoreDataClass.swift
 //  Virtual Tourist
 //
-//  Created by Antonio on 12/17/17.
+//  Created by Antonio on 12/21/17.
 //  Copyright © 2017 Antônio Carlos. All rights reserved.
 //
 //
@@ -12,7 +12,10 @@ import CoreData
 
 @objc(Pin)
 public class Pin: NSManagedObject {
-    convenience init(latitude: Double, longitude: Double, context: NSManagedObjectContext) {
+    
+    static let name = "Pin"
+    
+    convenience init(latitude: String, longitude: String, context: NSManagedObjectContext) {
         if let ent = NSEntityDescription.entity(forEntityName: "Pin", in: context) {
             self.init(entity: ent, insertInto: context)
             self.latitude = latitude
