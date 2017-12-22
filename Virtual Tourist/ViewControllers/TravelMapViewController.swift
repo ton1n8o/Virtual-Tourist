@@ -31,6 +31,18 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is PhotoAlbumViewController {
+            guard let pin = sender as? Pin else {
+                return
+            }
+            let controller = segue.destination as! PhotoAlbumViewController
+            controller.pin = pin
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func addPinGesture(_ sender: UILongPressGestureRecognizer) {
@@ -40,7 +52,7 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             let location = sender.location(in: mapView)
             let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
             
-            print("addPinGesture: Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
+            print("\(#function) Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
         
             _ = Pin(
                 latitude: String(locCoord.latitude),
@@ -48,8 +60,6 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
                 context: coreDataStack.context
             )
             save()
-            
-            // Client.shared().searchBy(latitude: locCoord.latitude, longitude: locCoord.longitude)
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = locCoord
@@ -69,16 +79,16 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    private func loadPin(latitude: String, longitude: String) {
+    private func loadPin(latitude: String, longitude: String) -> Pin? {
         let predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
         var pin: Pin?
         do {
             try pin = coreDataStack.fetchPin(predicate, entityName: Pin.name)
         } catch {
-            print("error:\(error)")
+            print("\(#function) error:\(error)")
             showInfo(withTitle: "Error", withMessage: "Error while fetching location: \(error)")
         }
-        print(pin ?? "no pin found")
+        return pin
     }
     
     // MARK: - MKMapViewDelegate
@@ -111,11 +121,12 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             return
         }
         mapView.deselectAnnotation(annotation, animated: true)
-        print("pin selected: lat \(annotation.coordinate.latitude) lon \(annotation.coordinate.longitude)")
-        loadPin(
-            latitude: String(annotation.coordinate.latitude),
-            longitude: String(annotation.coordinate.longitude)
-        )
+        print("\(#function) lat \(annotation.coordinate.latitude) lon \(annotation.coordinate.longitude)")
+        let lat = String(annotation.coordinate.latitude)
+        let lon = String(annotation.coordinate.longitude)
+        if let pin = loadPin(latitude: lat, longitude: lon) {
+            performSegue(withIdentifier: "showAlbum", sender: pin)
+        }
     }
 
 }
