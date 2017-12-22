@@ -71,13 +71,14 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     private func loadPin(latitude: String, longitude: String) {
         let predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
-        var pins: [Pin]!
+        var pin: Pin?
         do {
-            try pins = coreDataStack.fetchPin(predicate, entityName: Pin.name)
+            try pin = coreDataStack.fetchPin(predicate, entityName: Pin.name)
         } catch {
             print("error:\(error)")
+            showInfo(withTitle: "Error", withMessage: "Error while fetching location: \(error)")
         }
-        print(pins)
+        print(pin ?? "no pin found")
     }
     
     // MARK: - MKMapViewDelegate

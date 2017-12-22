@@ -20,6 +20,7 @@
 		02C94A981FE6AAA30078CF2C /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */; };
 		02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A951FE6AAA30078CF2C /* Photo.swift */; };
 		02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */; };
+		02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */; };
 		02E87A621FE7D84800163537 /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E87A611FE7D84800163537 /* ViewController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		02C94A941FE6AAA30078CF2C /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02C94A951FE6AAA30078CF2C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		02E87A611FE7D84800163537 /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				02298AD11FD824A300320302 /* TravelMapViewController.swift */,
+				02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				027786DD1FEBE8EE0074382C /* Pin.swift in Sources */,
 				02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */,
 				0249DBD81FE541F10098D510 /* Constants.swift in Sources */,
+				02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

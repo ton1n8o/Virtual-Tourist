@@ -74,15 +74,16 @@ struct CoreDataStack {
         try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: dbURL, options: nil)
     }
     
-    func fetchPin(_ predicate: NSPredicate, entityName: String, sorting: NSSortDescriptor? = nil) throws -> [Pin] {
+    func fetchPin(_ predicate: NSPredicate, entityName: String, sorting: NSSortDescriptor? = nil) throws -> Pin? {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fr.predicate = predicate
         if let sorting = sorting {
             fr.sortDescriptors = [sorting]
         }
-        var d : [NSManagedObject]!
-        try d = context.fetch(fr) as! [NSManagedObject]
-        return d as! [Pin]
+        guard let pin = (try context.fetch(fr) as! [Pin]).first else {
+            return nil
+        }
+        return pin
     }
 }
 
