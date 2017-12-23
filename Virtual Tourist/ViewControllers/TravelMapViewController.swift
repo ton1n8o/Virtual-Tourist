@@ -25,11 +25,6 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         mapView.delegate = self
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     // MARK: - Navigation
     
@@ -90,6 +85,10 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         }
         return pin
     }
+
+}
+
+extension TravelMapViewController {
     
     // MARK: - MKMapViewDelegate
     
@@ -128,5 +127,4 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             performSegue(withIdentifier: "showAlbum", sender: pin)
         }
     }
-
 }
