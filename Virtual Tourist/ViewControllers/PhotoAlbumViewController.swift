@@ -38,7 +38,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let lon = Double(pin.longitude!)!
         print("\(#function) lat: \(lat), lon: \(lon)\n\n")
         
-        Client.shared().searchBy(latitude: lat, longitude: lon)
+        Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParser, error) in
+            
+        }
     }
     
     // MARK: - Actions

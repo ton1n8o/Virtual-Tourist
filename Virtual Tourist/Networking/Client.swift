@@ -23,7 +23,7 @@ class Client {
         return Singleton.shared
     }
     
-    func searchBy(latitude: Double, longitude: Double) {
+    func searchBy(latitude: Double, longitude: Double, completion: @escaping (_ result: PhotosParser?, _ error: NSError?) -> Void) {
         
         let bbox = bboxString(latitude: latitude, longitude: longitude)
         
@@ -38,7 +38,17 @@ class Client {
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in
-            print(data ?? "no data") 
+            guard let data = data else {
+                return
+            }
+            
+            let photosParser: PhotosParser?
+            do {
+                photosParser = try JSONDecoder().decode(PhotosParser.self, from: data)
+                print("\(#function) \(String(describing: photosParser))")                
+            } catch {
+                print("\(#function) error: \(error)")
+            }
         }
     }
     
