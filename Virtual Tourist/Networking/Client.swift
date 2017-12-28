@@ -23,7 +23,7 @@ class Client {
         return Singleton.shared
     }
     
-    func searchBy(latitude: Double, longitude: Double, completion: @escaping (_ result: PhotosParser?, _ error: NSError?) -> Void) {
+    func searchBy(latitude: Double, longitude: Double, completion: @escaping (_ result: PhotosParser?, _ error: Error?) -> Void) {
         
         let bbox = bboxString(latitude: latitude, longitude: longitude)
         
@@ -42,12 +42,12 @@ class Client {
                 return
             }
             
-            let photosParser: PhotosParser?
             do {
-                photosParser = try JSONDecoder().decode(PhotosParser.self, from: data)
-                print("\(#function) \(String(describing: photosParser))")                
+                let photosParser = try JSONDecoder().decode(PhotosParser.self, from: data)
+                completion(photosParser, nil)
             } catch {
                 print("\(#function) error: \(error)")
+                completion(nil, error)
             }
         }
     }

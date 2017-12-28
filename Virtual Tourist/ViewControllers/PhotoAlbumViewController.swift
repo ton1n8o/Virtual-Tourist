@@ -33,18 +33,20 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         }
         showOnTheMap(pin)
         
-        print("\(#function) lat: \(pin.latitude!), lon: \(pin.longitude!)")
         let lat = Double(pin.latitude!)!
         let lon = Double(pin.longitude!)!
-        print("\(#function) lat: \(lat), lon: \(lon)\n\n")
         
         if let photos = loadPhotos(using: pin), !photos.isEmpty {
             print("\(#function) photos \(photos.count)")
         } else {
             print("\(#function) no photos")
             // pin selected has no photos
-            Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParser, error) in
-                
+            Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParsed, error) in
+                if let photosParsed = photosParsed {
+                    
+                } else if let error = error {
+                    
+                }
             }
         }
         
