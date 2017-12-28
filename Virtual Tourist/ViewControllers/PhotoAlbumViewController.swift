@@ -38,9 +38,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let lon = Double(pin.longitude!)!
         print("\(#function) lat: \(lat), lon: \(lon)\n\n")
         
-        Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParser, error) in
-            
+        if let photos = loadPhotos(using: pin) {
+            print("\(#function) photos \(photos.count)")
+        } else {
+            print("\(#function) no photos")
+            // pin selected has no photos
+            Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParser, error) in
+                
+            }
         }
+        
     }
     
     // MARK: - Actions
@@ -63,6 +70,18 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotation(annotation)
         mapView.setCenter(locCoord, animated: true)
+    }
+    
+    private func loadPhotos(using pin: Pin) -> [Photo]? {
+        let predicate = NSPredicate(format: "pin == %@", pin)
+        var photos: [Photo]?
+        do {
+            try photos = coreDataStack.fetchPhotos(predicate, entityName: Photo.name)
+        } catch {
+            print("\(#function) error:\(error)")
+            showInfo(withTitle: "Error", withMessage: "Error while fetching Photos: \(error)")
+        }
+        return photos
     }
     
 }

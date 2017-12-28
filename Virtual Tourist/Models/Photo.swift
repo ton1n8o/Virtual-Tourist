@@ -13,4 +13,6 @@ import CoreData
 @objc(Photo)
 public class Photo: NSManagedObject {
 
+    static let name = "Photo"
+    
 }

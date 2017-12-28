@@ -85,6 +85,18 @@ struct CoreDataStack {
         }
         return pin
     }
+    
+    func fetchPhotos(_ predicate: NSPredicate, entityName: String, sorting: NSSortDescriptor? = nil) throws -> [Photo]? {
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fr.predicate = predicate
+        if let sorting = sorting {
+            fr.sortDescriptors = [sorting]
+        }
+        guard let photos = try context.fetch(fr) as? [Photo] else {
+            return nil
+        }
+        return photos
+    }
 }
 
 // MARK: - CoreDataStack (Removing Data)
