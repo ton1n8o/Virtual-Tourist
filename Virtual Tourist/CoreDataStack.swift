@@ -86,6 +86,18 @@ struct CoreDataStack {
         return pin
     }
     
+    func fetchAllPins(_ predicate: NSPredicate? = nil, entityName: String, sorting: NSSortDescriptor? = nil) throws -> [Pin]? {
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fr.predicate = predicate
+        if let sorting = sorting {
+            fr.sortDescriptors = [sorting]
+        }
+        guard let pin = try context.fetch(fr) as? [Pin] else {
+            return nil
+        }
+        return pin
+    }
+    
     func fetchPhotos(_ predicate: NSPredicate, entityName: String, sorting: NSSortDescriptor? = nil) throws -> [Photo]? {
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fr.predicate = predicate

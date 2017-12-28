@@ -15,15 +15,15 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    // MARK: - Variables
-    
-    var pinTapped: Pin?
-    
     // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        
+        if let pins = loadAllPins() {
+            showPins(pins)
+        }
     }
     
     // MARK: - Navigation
@@ -59,7 +59,6 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = locCoord
             
-            mapView.removeAnnotations(mapView.annotations)
             mapView.addAnnotation(annotation)
         }
     }
@@ -74,6 +73,17 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    private func loadAllPins() -> [Pin]? {
+        var pins: [Pin]?
+        do {
+            try pins = coreDataStack.fetchAllPins(entityName: Pin.name)
+        } catch {
+            print("\(#function) error:\(error)")
+            showInfo(withTitle: "Error", withMessage: "Error while fetching Pin locations: \(error)")
+        }
+        return pins
+    }
+    
     private func loadPin(latitude: String, longitude: String) -> Pin? {
         let predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
         var pin: Pin?
@@ -84,6 +94,17 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             showInfo(withTitle: "Error", withMessage: "Error while fetching location: \(error)")
         }
         return pin
+    }
+    
+    func showPins(_ pins: [Pin]) {
+        for pin in pins where pin.latitude != nil && pin.longitude != nil {
+            let annotation = MKPointAnnotation()
+            let lat = Double(pin.latitude!)!
+            let lon = Double(pin.longitude!)!
+            annotation.coordinate = CLLocationCoordinate2DMake(lat, lon)
+            mapView.addAnnotation(annotation)
+        }
+        mapView.showAnnotations(mapView.annotations, animated: true)
     }
 
 }

@@ -38,7 +38,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let lon = Double(pin.longitude!)!
         print("\(#function) lat: \(lat), lon: \(lon)\n\n")
         
-        if let photos = loadPhotos(using: pin) {
+        if let photos = loadPhotos(using: pin), !photos.isEmpty {
             print("\(#function) photos \(photos.count)")
         } else {
             print("\(#function) no photos")
