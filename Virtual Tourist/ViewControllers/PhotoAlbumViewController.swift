@@ -43,13 +43,22 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             // pin selected has no photos
             Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParsed, error) in
                 if let photosParsed = photosParsed {
-                    
+                    print("\(#function) total; \(photosParsed.photos.photo.count)")
+                    var downloaded = 0
+                    for photo in photosParsed.photos.photo {
+                        Client.shared().downloadImage(imageUrl: photo.url, completion: { (data, error) in
+                            if data != nil {
+                                downloaded += 1
+                            }
+                            print(downloaded)
+                        })
+                    }
                 } else if let error = error {
-                    
+                    print("\(#function) error:\(error)")
+                    self.showInfo(withTitle: "Error", withMessage: "Error while fetching Photos: \(error)")
                 }
             }
         }
-        
     }
     
     // MARK: - Actions
@@ -81,7 +90,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             try photos = coreDataStack.fetchPhotos(predicate, entityName: Photo.name)
         } catch {
             print("\(#function) error:\(error)")
-            showInfo(withTitle: "Error", withMessage: "Error while fetching Photos: \(error)")
+            showInfo(withTitle: "Error", withMessage: "Error while lading Photos from disk: \(error)")
         }
         return photos
     }
