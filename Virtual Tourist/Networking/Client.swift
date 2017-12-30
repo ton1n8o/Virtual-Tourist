@@ -58,12 +58,12 @@ class Client {
         }
     }
     
-    func downloadImage(imageUrl: String, completion: @escaping (_ result: Data?, _ error: NSError?) -> Void) {
-        guard let url = URL(string: imageUrl), UIApplication.shared.canOpenURL(url) else {
+    func downloadImage(imageUrl: String, result: @escaping (_ result: Data?, _ error: NSError?) -> Void) {
+        guard let url = URL(string: imageUrl) else {
             return
         }
         _ = taskForGETMethod(nil, url, parameters: [:]) { (data, error) in
-            completion(data, error)
+            result(data, error)
         }
     }
     

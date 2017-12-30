@@ -18,6 +18,14 @@ extension UIViewController {
         return appDelegate.stack
     }
     
+    func save() {
+        do {
+            try coreDataStack.saveContext()
+        } catch {
+            showInfo(withTitle: "Error", withMessage: "Error while saving Pin location: \(error)")
+        }
+    }
+    
     func showInfo(withTitle: String = "Info", withMessage: String, action: (() -> Void)? = nil) {
         performUIUpdatesOnMain {
             let ac = UIAlertController(title: withTitle, message: withMessage, preferredStyle: .alert)

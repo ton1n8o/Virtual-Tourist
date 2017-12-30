@@ -65,14 +65,6 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - Helpers
     
-    private func save() {
-        do {
-            try coreDataStack.saveContext()
-        } catch {
-            showInfo(withTitle: "Error", withMessage: "Error while saving Pin location: \(error)")
-        }
-    }
-    
     private func loadAllPins() -> [Pin]? {
         var pins: [Pin]?
         do {

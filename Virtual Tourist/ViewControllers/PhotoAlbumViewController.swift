@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
@@ -19,14 +20,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Variables
     
     var pin: Pin?
+    var ctx: NSManagedObjectContext?
     
     // MARK: - UIViewController lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
         mapView.isZoomEnabled = false
         mapView.isScrollEnabled = false
+        
+        ctx = coreDataStack.context
         
         guard let pin = pin else {
             return
@@ -41,23 +45,60 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         } else {
             print("\(#function) no photos")
             // pin selected has no photos
+            
+            func showErrorMessage(msg: String) {
+                self.showInfo(withTitle: "Error", withMessage: msg)
+            }
+            
             Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParsed, error) in
                 if let photosParsed = photosParsed {
-                    print("\(#function) total; \(photosParsed.photos.photo.count)")
-                    var downloaded = 0
-                    for photo in photosParsed.photos.photo {
-                        Client.shared().downloadImage(imageUrl: photo.url, completion: { (data, error) in
-                            if data != nil {
-                                downloaded += 1
+                    
+                    print("\(#function) Downloading \(photosParsed.photos.photo.count) photos.")
+                    
+                    let errorMessage = " image(s) could not be downloaded."
+                    var errorCount = 0
+                    
+                    for (idx, photo) in photosParsed.photos.photo.enumerated() {
+                        
+                        Client.shared().downloadImage(imageUrl: photo.url) { (data, error) in
+                            
+                            if let data = data {
+                                
+                                print("\(#function) Downloading \(idx)")
+                                
+                                self.performUIUpdatesOnMain {
+                                    let photoCD = Photo(photoData: data, forPin: pin, context: self.ctx!)
+                                    photoCD.pin = pin
+                                }
+                                
+                            } else if let _ = error {
+                                errorCount += 1
                             }
-                            print(downloaded)
-                        })
+                            
+                            if idx == photosParsed.photos.photo.count - 1 {
+                                
+                                print("\(#function) DONE")
+                                
+                                self.performUIUpdatesOnMain {
+                                    self.save()
+                                }
+                                
+                                if errorCount > 0 {
+                                    let message = "\(errorCount) " + errorMessage
+                                    showErrorMessage(msg: message)
+                                }
+                            }
+                            
+                        }
+                        
                     }
+                    
                 } else if let error = error {
                     print("\(#function) error:\(error)")
                     self.showInfo(withTitle: "Error", withMessage: "Error while fetching Photos: \(error)")
                 }
             }
+            
         }
     }
     
@@ -84,7 +125,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func loadPhotos(using pin: Pin) -> [Photo]? {
-        let predicate = NSPredicate(format: "pin == %@", pin)
+        let predicate = NSPredicate(format: "pin == %@", argumentArray: [pin])
         var photos: [Photo]?
         do {
             try photos = coreDataStack.fetchPhotos(predicate, entityName: Photo.name)
