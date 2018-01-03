@@ -22,7 +22,9 @@
 		02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A951FE6AAA30078CF2C /* Photo.swift */; };
 		02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */; };
 		02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */; };
+		02D15AC91FFBC7F30069737B /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D15AC81FFBC7F30069737B /* PhotoViewCell.swift */; };
 		02E87A621FE7D84800163537 /* ViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E87A611FE7D84800163537 /* ViewController+Extensions.swift */; };
+		02EBC2231FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC2221FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +45,9 @@
 		02C94A951FE6AAA30078CF2C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		02C94A961FE6AAA30078CF2C /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		02D15AC81FFBC7F30069737B /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 		02E87A611FE7D84800163537 /* ViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extensions.swift"; sourceTree = "<group>"; };
+		02EBC2221FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoAlbumViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,7 @@
 				02298AC41FD8221F00320302 /* Assets.xcassets */,
 				02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */,
 				02298AC11FD8221F00320302 /* Virtual_Tourist.xcdatamodeld */,
+				02D15AC71FFBC7CD0069737B /* CustomView */,
 				02E87A601FE7D7FD00163537 /* Extensions */,
 				02298AD01FD8225C00320302 /* Networking */,
 				02298ACF1FD8225000320302 /* ViewControllers */,
@@ -97,6 +102,7 @@
 			children = (
 				02298AD11FD824A300320302 /* TravelMapViewController.swift */,
 				02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */,
+				02EBC2221FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -119,6 +125,14 @@
 				02A70D091FF3B036003AAEFF /* PhotosParser.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		02D15AC71FFBC7CD0069737B /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				02D15AC81FFBC7F30069737B /* PhotoViewCell.swift */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 		02E87A601FE7D7FD00163537 /* Extensions */ = {
@@ -210,10 +224,12 @@
 				02C94A991FE6AAA30078CF2C /* Photo.swift in Sources */,
 				0249DBDA1FE543400098D510 /* Client.swift in Sources */,
 				027786DD1FEBE8EE0074382C /* Pin.swift in Sources */,
+				02EBC2231FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift in Sources */,
 				02C94A9A1FE6AAA30078CF2C /* Photo+CoreDataProperties.swift in Sources */,
 				0249DBD81FE541F10098D510 /* Constants.swift in Sources */,
 				02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */,
 				02A70D0A1FF3B036003AAEFF /* PhotosParser.swift in Sources */,
+				02D15AC91FFBC7F30069737B /* PhotoViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

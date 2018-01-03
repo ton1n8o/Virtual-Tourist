@@ -19,8 +19,10 @@ struct Photos: Codable {
 struct PhotoParser: Codable {
     
     let url: String
+    let title: String
     
     enum CodingKeys: String, CodingKey {
         case url = "url_m"
+        case title
     }
 }

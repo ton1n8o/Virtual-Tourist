@@ -35,6 +35,7 @@ class Client {
             , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
             , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
+            , Constants.FlickrParameterKeys.PhotosPerPage  : "10"
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in

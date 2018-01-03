@@ -15,9 +15,10 @@ public class Photo: NSManagedObject {
 
     static let name = "Photo"
     
-    convenience init(photoData: Data, forPin: Pin, context: NSManagedObjectContext) {
+    convenience init(title: String, photoData: Data, forPin: Pin, context: NSManagedObjectContext) {
         if let ent = NSEntityDescription.entity(forEntityName: Photo.name, in: context) {
             self.init(entity: ent, insertInto: context)
+            self.title = title
             self.image = NSData(data: photoData)
             self.pin = forPin
         } else {

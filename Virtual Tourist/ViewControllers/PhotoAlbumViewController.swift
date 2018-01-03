@@ -16,15 +16,23 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout?
     
     // MARK: - Variables
     
+    var insertedIndexPaths: [IndexPath]!
+    var deletedIndexPaths: [IndexPath]!
+    var updatedIndexPaths: [IndexPath]!
+    
     var pin: Pin?
+    var fetchedResultsController: NSFetchedResultsController<Photo>!
     
     // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateFlowLayout(self.view.frame.size)
+        updateFlowLayout(view.frame.size)
         mapView.delegate = self
         mapView.isZoomEnabled = false
         mapView.isScrollEnabled = false
@@ -33,6 +41,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             return
         }
         showOnTheMap(pin)
+        setupFetchedResultControllerWith(pin)
         
         if let photos = loadPhotos(using: pin), !photos.isEmpty {
             print("\(#function) photos \(photos.count)")
@@ -43,6 +52,26 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        print("in viewDidLayoutSubviews()")
+        super.viewDidLayoutSubviews()
+        
+        // Layout the collection view so that cells take up 1/3 of the width,
+        // with no space in-between.
+        let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let width = floor((self.collectionView.frame.size.width - 10)/3)
+        layout.itemSize = CGSize(width: width, height: width)
+        collectionView.collectionViewLayout = layout
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateFlowLayout(size)
+    }
+    
     // MARK: - Actions
     
     @IBAction func newCollection(_ sender: Any) {
@@ -50,6 +79,30 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     }
     
     // MARK: - Helpers
+    
+    private func setupFetchedResultControllerWith(_ pin: Pin) {
+        
+        let fr = NSFetchRequest<Photo>(entityName: Photo.name)
+        fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        let pred = NSPredicate(format: "pin == %@", argumentArray: [pin])
+        fr.predicate = pred
+        
+        // Create the FetchedResultsController
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: coreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        // Start the fetched results controller
+        var error: NSError?
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error1 as NSError {
+            error = error1
+        }
+        
+        if let error = error {
+            print("\(#function) Error performing initial fetch: \(error)")
+        }
+    }
     
     private func fetchPhotosFromAPI(_ pin: Pin) {
         
@@ -67,7 +120,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func storePhotos(_ photos: [PhotoParser], forPin: Pin) {
+    private func storePhotos(_ photos: [PhotoParser], forPin: Pin) {
         
         func showErrorMessage(msg: String) {
             self.showInfo(withTitle: "Error", withMessage: msg)
@@ -83,20 +136,15 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
                 if let data = data {
                     print("\(#function) Downloading \(idx)")
                     self.performUIUpdatesOnMain {
-                        _ = Photo(photoData: data, forPin: forPin, context: self.coreDataStack.context)
+                        _ = Photo(title: photo.title, photoData: data, forPin: forPin, context: self.coreDataStack.context)
+                        self.save()
                     }
                 } else if let _ = error {
                     errorCount += 1
                 }
                 
                 if idx == photos.count - 1 {
-                    
                     print("\(#function) DONE")
-                    
-                    self.performUIUpdatesOnMain {
-                        self.save()
-                    }
-                    
                     if errorCount > 0 {
                         let message = "\(errorCount) " + errorMessage
                         showErrorMessage(msg: message)
@@ -134,11 +182,50 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         return photos
     }
     
+    private func updateFlowLayout(_ withSize: CGSize) {
+        
+        let landscape = withSize.width > withSize.height
+        
+        let space: CGFloat = landscape ? 5 : 3
+        let items: CGFloat = landscape ? 5 : 3
+        
+        // (total width - space gaps) / the remainder divided by the number of items presented
+        let dimension = (withSize.width - ((items - 1) * space) + 20) / items
+        
+        flowLayout?.minimumInteritemSpacing = space
+        flowLayout?.minimumLineSpacing = space
+        flowLayout?.itemSize = CGSize(width: dimension, height: dimension)
+//        flowLayout?.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    }
+    
 }
 
-extension PhotoAlbumViewController {
+// MARK: - UICollectionView DataSource & Delegate
+
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
-    // MARK: - MKMapViewDelegate
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return fetchedResultsController.sections?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let sectionInfo = self.fetchedResultsController.sections?[section] {
+            return sectionInfo.numberOfObjects
+        }
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.identifier, for: indexPath) as! PhotoViewCell
+        let photo = fetchedResultsController.object(at: indexPath)
+        cell.imageView.image = UIImage(data: Data(referencing: photo.image!))
+        return cell
+    }
+}
+
+// MARK: - MKMapViewDelegate
+
+extension PhotoAlbumViewController {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
