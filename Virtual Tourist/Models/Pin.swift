@@ -1,9 +1,9 @@
 //
-//  Pin+CoreDataClass.swift
+//  Pin.swift
 //  Virtual Tourist
 //
-//  Created by Antonio on 12/21/17.
-//  Copyright © 2017 Antônio Carlos. All rights reserved.
+//  Created by Antonio on 1/5/18.
+//  Copyright © 2018 Antônio Carlos. All rights reserved.
 //
 //
 
@@ -24,4 +24,5 @@ public class Pin: NSManagedObject {
             fatalError("Unable to find Entity name!")
         }
     }
+    
 }

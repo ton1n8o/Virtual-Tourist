@@ -2,8 +2,8 @@
 //  Pin+CoreDataProperties.swift
 //  Virtual Tourist
 //
-//  Created by Antonio on 12/21/17.
-//  Copyright © 2017 Antônio Carlos. All rights reserved.
+//  Created by Antonio on 1/5/18.
+//  Copyright © 2018 Antônio Carlos. All rights reserved.
 //
 //
 
@@ -19,6 +19,23 @@ extension Pin {
 
     @NSManaged public var latitude: String?
     @NSManaged public var longitude: String?
-    @NSManaged public var photos: Photo?
+    @NSManaged public var photos: NSSet?
+
+}
+
+// MARK: Generated accessors for photos
+extension Pin {
+
+    @objc(addPhotosObject:)
+    @NSManaged public func addToPhotos(_ value: Photo)
+
+    @objc(removePhotosObject:)
+    @NSManaged public func removeFromPhotos(_ value: Photo)
+
+    @objc(addPhotos:)
+    @NSManaged public func addToPhotos(_ values: NSSet)
+
+    @objc(removePhotos:)
+    @NSManaged public func removeFromPhotos(_ values: NSSet)
 
 }

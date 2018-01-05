@@ -43,31 +43,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         showOnTheMap(pin)
         setupFetchedResultControllerWith(pin)
         
-        if let photos = loadPhotos(using: pin), !photos.isEmpty {
-            print("\(#function) photos \(photos.count)")
-        } else {
-            print("\(#function) no photos")
+        if let photos = pin.photos, photos.count == 0 {
             // pin selected has no photos
             fetchPhotosFromAPI(pin)
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        print("in viewDidLayoutSubviews()")
-        super.viewDidLayoutSubviews()
-        
-        // Layout the collection view so that cells take up 1/3 of the width,
-        // with no space in-between.
-        let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        
-        let width = floor((self.collectionView.frame.size.width - 10)/3)
-        layout.itemSize = CGSize(width: width, height: width)
-        collectionView.collectionViewLayout = layout
-    }
-    
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         updateFlowLayout(size)
     }
@@ -189,13 +170,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let space: CGFloat = landscape ? 5 : 3
         let items: CGFloat = landscape ? 5 : 3
         
-        // (total width - space gaps) / the remainder divided by the number of items presented
-        let dimension = (withSize.width - ((items - 1) * space) + 20) / items
+        let dimension = (withSize.width - ((items + 1) * space)) / items
         
         flowLayout?.minimumInteritemSpacing = space
         flowLayout?.minimumLineSpacing = space
         flowLayout?.itemSize = CGSize(width: dimension, height: dimension)
-//        flowLayout?.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
     }
     
 }

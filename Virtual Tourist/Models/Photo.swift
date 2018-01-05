@@ -2,8 +2,8 @@
 //  Photo+CoreDataClass.swift
 //  Virtual Tourist
 //
-//  Created by Antonio on 12/17/17.
-//  Copyright © 2017 Antônio Carlos. All rights reserved.
+//  Created by Antonio on 1/5/18.
+//  Copyright © 2018 Antônio Carlos. All rights reserved.
 //
 //
 
@@ -12,7 +12,7 @@ import CoreData
 
 @objc(Photo)
 public class Photo: NSManagedObject {
-
+    
     static let name = "Photo"
     
     convenience init(title: String, photoData: Data, forPin: Pin, context: NSManagedObjectContext) {
@@ -25,4 +25,5 @@ public class Photo: NSManagedObject {
             fatalError("Unable to find Entity name!")
         }
     }
+    
 }
