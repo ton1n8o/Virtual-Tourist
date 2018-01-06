@@ -17,9 +17,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout?
+    @IBOutlet weak var button: UIButton!
     
     // MARK: - Variables
     
+    var selectedIndexes = [IndexPath]()
     var insertedIndexPaths: [IndexPath]!
     var deletedIndexPaths: [IndexPath]!
     var updatedIndexPaths: [IndexPath]!
@@ -55,8 +57,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - Actions
     
-    @IBAction func newCollection(_ sender: Any) {
-        
+    @IBAction func deleteAction(_ sender: Any) {
+        deletePhotos()
     }
     
     // MARK: - Helpers
@@ -115,7 +117,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             Client.shared().downloadImage(imageUrl: photo.url) { (data, error) in
                 
                 if let data = data {
-                    print("\(#function) Downloading \(idx)")
                     self.performUIUpdatesOnMain {
                         _ = Photo(title: photo.title, photoData: data, forPin: forPin, context: self.coreDataStack.context)
                         self.save()
@@ -168,7 +169,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let landscape = withSize.width > withSize.height
         
         let space: CGFloat = landscape ? 5 : 3
-        let items: CGFloat = landscape ? 5 : 3
+        let items: CGFloat = landscape ? 2 : 3
         
         let dimension = (withSize.width - ((items + 1) * space)) / items
         
@@ -178,28 +179,39 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
     }
     
-}
-
-// MARK: - UICollectionView DataSource & Delegate
-
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let sectionInfo = self.fetchedResultsController.sections?[section] {
-            return sectionInfo.numberOfObjects
+    func deletePhotos() {
+        if selectedIndexes.isEmpty {
+            // delete all photos
+            for photos in fetchedResultsController.fetchedObjects! {
+                coreDataStack.context.delete(photos)
+            }
+            fetchPhotosFromAPI(pin!)
+        } else {
+            // delete only photos selected
+            var photosToDelete = [Photo]()
+            
+            for indexPath in selectedIndexes {
+                photosToDelete.append(fetchedResultsController.object(at: indexPath))
+            }
+            
+            for photo in photosToDelete {
+                coreDataStack.context.delete(photo)
+            }
+            
         }
-        return 0
+        selectedIndexes = [IndexPath]()
+        updateBottomButton()
+        for cell in collectionView.visibleCells {
+            (cell as! PhotoViewCell).imageView.alpha = 1.0
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.identifier, for: indexPath) as! PhotoViewCell
-        let photo = fetchedResultsController.object(at: indexPath)
-        cell.imageView.image = UIImage(data: Data(referencing: photo.image!))
-        return cell
+    func updateBottomButton() {
+        if selectedIndexes.count > 0 {
+            button.setTitle("Remove Selected", for: .normal)
+        } else {
+            button.setTitle("New Collection", for: .normal)
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="egw-Pz-W7E">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina5_5" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,11 +15,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TravelMapViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Lhx-K4-gLs">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="zt6-hF-EmP"/>
@@ -59,23 +59,35 @@
             <objects>
                 <viewController id="DiV-kw-mV4" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NoC-fS-eGv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9SM-Uz-rXi">
-                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <rect key="frame" x="0.0" y="32" width="736" height="382"/>
                                 <subviews>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="yrI-ck-ekw">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="736" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="CQa-fy-F2c"/>
+                                            <constraint firstAttribute="height" id="cjd-6w-JYm"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="cjd-6w-JYm"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact">
+                                            <mask key="constraints">
+                                                <exclude reference="CQa-fy-F2c"/>
+                                                <include reference="cjd-6w-JYm"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <outlet property="delegate" destination="DiV-kw-mV4" id="XUn-dS-dfA"/>
                                         </connections>
                                     </mapView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qew-ml-CTV">
-                                        <rect key="frame" x="0.0" y="120.00000000000003" width="414" height="510.66666666666674"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="736" height="352"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="KY6-Te-K65">
                                             <size key="itemSize" width="150" height="150"/>
@@ -113,15 +125,15 @@
                                         </connections>
                                     </collectionView>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yZv-06-LNv">
-                                        <rect key="frame" x="0.0" y="630.66666666666663" width="414" height="41.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="352" width="736" height="30"/>
                                         <items>
                                             <barButtonItem style="plain" id="1Vh-rB-hDU">
                                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bLQ-x0-jGd">
-                                                    <rect key="frame" x="20" y="5.6666666666666679" width="374" height="30.000000000000004"/>
+                                                    <rect key="frame" x="20" y="0.0" width="696" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="New Collection"/>
                                                     <connections>
-                                                        <action selector="newCollection:" destination="DiV-kw-mV4" eventType="touchUpInside" id="xqE-pe-sK3"/>
+                                                        <action selector="deleteAction:" destination="DiV-kw-mV4" eventType="touchUpInside" id="xqE-pe-sK3"/>
                                                     </connections>
                                                 </button>
                                             </barButtonItem>
@@ -140,6 +152,7 @@
                         <viewLayoutGuide key="safeArea" id="EA5-VA-BUn"/>
                     </view>
                     <connections>
+                        <outlet property="button" destination="bLQ-x0-jGd" id="xH9-YR-epW"/>
                         <outlet property="collectionView" destination="Qew-ml-CTV" id="aM5-Rj-aoa"/>
                         <outlet property="flowLayout" destination="KY6-Te-K65" id="wpd-Y9-iHd"/>
                         <outlet property="mapView" destination="yrI-ck-ekw" id="Nqr-hs-Cca"/>
@@ -155,7 +168,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="egw-Pz-W7E" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5En-jD-eV7">
-                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
