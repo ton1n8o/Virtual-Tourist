@@ -14,12 +14,15 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Outlets
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var footerView: UIView!
     
     // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        navigationItem.rightBarButtonItem = editButtonItem
+        footerView.isHidden = true
         
         if let pins = loadAllPins() {
             showPins(pins)
@@ -61,6 +64,11 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        footerView.isHidden = !editing
     }
     
     // MARK: - Helpers

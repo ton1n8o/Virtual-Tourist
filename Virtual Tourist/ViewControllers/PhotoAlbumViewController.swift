@@ -132,9 +132,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
                         showErrorMessage(msg: message)
                     }
                 }
-                
             }
-            
         }
     }
     
