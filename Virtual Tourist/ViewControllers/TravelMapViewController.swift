@@ -137,14 +137,22 @@ extension TravelMapViewController {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         guard let annotation = view.annotation else {
             return
         }
+
         mapView.deselectAnnotation(annotation, animated: true)
         print("\(#function) lat \(annotation.coordinate.latitude) lon \(annotation.coordinate.longitude)")
         let lat = String(annotation.coordinate.latitude)
         let lon = String(annotation.coordinate.longitude)
         if let pin = loadPin(latitude: lat, longitude: lon) {
+            if isEditing {
+                mapView.removeAnnotation(annotation)
+                coreDataStack.context.delete(pin)
+                save()
+                return
+            }
             performSegue(withIdentifier: "showAlbum", sender: pin)
         }
     }
