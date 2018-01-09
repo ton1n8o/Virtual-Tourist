@@ -33,7 +33,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateFlowLayout(self.view.frame.size)
         updateFlowLayout(view.frame.size)
         mapView.delegate = self
         mapView.isZoomEnabled = false
@@ -66,9 +65,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     private func setupFetchedResultControllerWith(_ pin: Pin) {
         
         let fr = NSFetchRequest<Photo>(entityName: Photo.name)
-        fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        let pred = NSPredicate(format: "pin == %@", argumentArray: [pin])
-        fr.predicate = pred
+        fr.sortDescriptors = []
+        fr.predicate = NSPredicate(format: "pin == %@", argumentArray: [pin])
         
         // Create the FetchedResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: coreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)

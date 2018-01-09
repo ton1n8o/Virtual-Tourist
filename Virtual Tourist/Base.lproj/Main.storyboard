@@ -117,7 +117,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="PhotoViewCell" id="VsQ-6O-1tC" customClass="PhotoViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoViewCell" id="VsQ-6O-1tC" customClass="PhotoViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -125,10 +125,11 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YoM-Iw-3yG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="150" height="86"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                         </imageView>
                                                     </subviews>
                                                 </view>
+                                                <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="YoM-Iw-3yG" secondAttribute="trailing" id="6MC-ca-OCt"/>
                                                     <constraint firstAttribute="bottom" secondItem="YoM-Iw-3yG" secondAttribute="bottom" id="8iT-en-V2M"/>
