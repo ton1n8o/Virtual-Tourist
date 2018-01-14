@@ -46,7 +46,7 @@ struct Constants {
         static let APIKey = "e642c34c6ac8532ef77a7ec1c221babc"
         static let ResponseFormat = "json"
         static let DisableJSONCallback = "1" /* 1 means "yes" */
-        static let MediumURL = "url_m"
+        static let MediumURL = "url_n"
         static let UseSafeSearch = "1"
     }
 }

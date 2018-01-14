@@ -22,7 +22,7 @@ struct PhotoParser: Codable {
     let title: String
     
     enum CodingKeys: String, CodingKey {
-        case url = "url_m"
+        case url = "url_n"
         case title
     }
 }

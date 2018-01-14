@@ -13,6 +13,7 @@ class Client {
     // MARK: - Properties
     
     var session = URLSession.shared
+    private var tasks: [String: URLSessionDataTask] = [:]
     
     // MARK: Shared Instance
     
@@ -35,7 +36,7 @@ class Client {
             , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
             , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
-            , Constants.FlickrParameterKeys.PhotosPerPage  : "20"
+            , Constants.FlickrParameterKeys.PhotosPerPage  : "50"
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in
@@ -63,9 +64,19 @@ class Client {
         guard let url = URL(string: imageUrl) else {
             return
         }
-        _ = taskForGETMethod(nil, url, parameters: [:]) { (data, error) in
+        let task = taskForGETMethod(nil, url, parameters: [:]) { (data, error) in
             result(data, error)
+            self.tasks.removeValue(forKey: imageUrl)
         }
+        
+        if tasks[imageUrl] == nil {
+           tasks[imageUrl] = task
+        }
+    }
+    
+    func cancelDownload(_ imageUrl: String) {
+        tasks[imageUrl]?.cancel()
+        tasks.removeValue(forKey: imageUrl)
     }
     
 }
@@ -101,8 +112,14 @@ extension Client {
             }
             
             /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                sendError("There was an error with your request: \(error!.localizedDescription)")
+            if let error = error {
+                
+                // the request got canceled
+                if (error as NSError).code == URLError.cancelled.rawValue {
+                    completionHandlerForGET(nil, nil)
+                } else {
+                    sendError("There was an error with your request: \(error.localizedDescription)")
+                }
                 return
             }
             

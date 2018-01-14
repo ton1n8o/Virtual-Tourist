@@ -79,21 +79,39 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.identifier, for: indexPath) as! PhotoViewCell
+        cell.imageView.image = nil
+        cell.activityIndicator.startAnimating()
+        
         let photo = fetchedResultsController.object(at: indexPath)
-        configImage(using: cell, photo: photo)
+        cell.imageUrl = photo.imageUrl!
+        configImage(using: cell, photo: photo, cv: collectionView, index: indexPath)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! PhotoViewCell
-        configureCell(cell, atIndexPath: indexPath)
+        configItemSelected(cell, atIndexPath: indexPath)
         updateBottomButton()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying: UICollectionViewCell, forItemAt: IndexPath) {
+        
+        if collectionView.cellForItem(at: forItemAt) == nil {
+            return
+        }
+        
+        let photo = fetchedResultsController.object(at: forItemAt)
+        if photo.image == nil {
+            if let imageUrl = photo.imageUrl {
+                Client.shared().cancelDownload(imageUrl)
+            }
+        }
     }
     
     // MARK: - Helpers
     
-    private func configureCell(_ photoViewCell: PhotoViewCell, atIndexPath indexPath: IndexPath) {
+    private func configItemSelected(_ photoViewCell: PhotoViewCell, atIndexPath indexPath: IndexPath) {
         
         // Whenever a cell is tapped we will toggle its presence in the selectedIndexes array
         if let index = selectedIndexes.index(of: indexPath) {
@@ -109,24 +127,37 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         }
     }
     
-    private func configImage(using cell: PhotoViewCell, photo: Photo) {
-        if photo.image == nil {
-            cell.activityIndicator.startAnimating()
+    private func configImage(using cell: PhotoViewCell, photo: Photo, cv: UICollectionView, index: IndexPath) {
+        if let imageData = photo.image {
+            cell.activityIndicator.stopAnimating()
+            cell.imageView.image = UIImage(data: Data(referencing: imageData))
+        } else {
             if let imageUrl = photo.imageUrl {
+                cell.activityIndicator.startAnimating()
                 Client.shared().downloadImage(imageUrl: imageUrl) { (data, error) in
-                    if let data = data {
+                    if let _ = error {
                         self.performUIUpdatesOnMain {
-                            cell.imageView.image = UIImage(data: data)
-                            photo.image = NSData(data: data)
-                            self.save()
                             cell.activityIndicator.stopAnimating()
+                            self.showInfo(withTitle: "Error", withMessage: "Error while fetching image for URL: \(imageUrl)", action: nil)
+                        }
+                        return
+                    } else if let data = data {
+                        self.performUIUpdatesOnMain {
+                            
+                            if let newCell = cv.cellForItem(at: index) as? PhotoViewCell {
+                                if newCell.imageUrl == imageUrl {
+                                    newCell.imageView.image = UIImage(data: data)
+                                    cell.activityIndicator.stopAnimating()
+                                }
+                            }
+                            photo.image = NSData(data: data)
+                            DispatchQueue.global(qos: .background).async {
+                                self.save()
+                            }
                         }
                     }
                 }
             }
-        } else {
-            cell.activityIndicator.stopAnimating()
-            cell.imageView.image = UIImage(data: Data(referencing: photo.image!))
         }
     }
     
