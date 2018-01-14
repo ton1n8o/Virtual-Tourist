@@ -69,7 +69,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         fr.predicate = NSPredicate(format: "pin == %@", argumentArray: [pin])
         
         // Create the FetchedResultsController
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: coreDataStack.context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: CoreDataStack.shared().context, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         // Start the fetched results controller
@@ -102,34 +102,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func storePhotos(_ photos: [PhotoParser], forPin: Pin) {
-        
         func showErrorMessage(msg: String) {
-            self.showInfo(withTitle: "Error", withMessage: msg)
+            showInfo(withTitle: "Error", withMessage: msg)
         }
         
-        let errorMessage = " image(s) could not be downloaded."
-        var errorCount = 0
-        
-        for (idx, photo) in photos.enumerated() {
-            
-            Client.shared().downloadImage(imageUrl: photo.url) { (data, error) in
-                
-                if let data = data {
-                    self.performUIUpdatesOnMain {
-                        _ = Photo(title: photo.title, photoData: data, forPin: forPin, context: self.coreDataStack.context)
-                        self.save()
-                    }
-                } else if let _ = error {
-                    errorCount += 1
-                }
-                
-                if idx == photos.count - 1 {
-                    print("\(#function) DONE")
-                    if errorCount > 0 {
-                        let message = "\(errorCount) " + errorMessage
-                        showErrorMessage(msg: message)
-                    }
-                }
+        for photo in photos {
+            performUIUpdatesOnMain {
+                _ = Photo(title: photo.title, imageUrl: photo.url, forPin: forPin, context: CoreDataStack.shared().context)
+                self.save()
             }
         }
     }
@@ -152,7 +132,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let predicate = NSPredicate(format: "pin == %@", argumentArray: [pin])
         var photos: [Photo]?
         do {
-            try photos = coreDataStack.fetchPhotos(predicate, entityName: Photo.name)
+            try photos = CoreDataStack.shared().fetchPhotos(predicate, entityName: Photo.name)
         } catch {
             print("\(#function) error:\(error)")
             showInfo(withTitle: "Error", withMessage: "Error while lading Photos from disk: \(error)")
@@ -179,7 +159,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         if selectedIndexes.isEmpty {
             // delete all photos
             for photos in fetchedResultsController.fetchedObjects! {
-                coreDataStack.context.delete(photos)
+                CoreDataStack.shared().context.delete(photos)
             }
             fetchPhotosFromAPI(pin!)
         } else {
@@ -191,7 +171,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             }
             
             for photo in photosToDelete {
-                coreDataStack.context.delete(photo)
+                CoreDataStack.shared().context.delete(photo)
             }
             
         }

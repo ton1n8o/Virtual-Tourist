@@ -55,7 +55,7 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
             _ = Pin(
                 latitude: String(locCoord.latitude),
                 longitude: String(locCoord.longitude),
-                context: coreDataStack.context
+                context: CoreDataStack.shared().context
             )
             save()
             
@@ -76,7 +76,7 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     private func loadAllPins() -> [Pin]? {
         var pins: [Pin]?
         do {
-            try pins = coreDataStack.fetchAllPins(entityName: Pin.name)
+            try pins = CoreDataStack.shared().fetchAllPins(entityName: Pin.name)
         } catch {
             print("\(#function) error:\(error)")
             showInfo(withTitle: "Error", withMessage: "Error while fetching Pin locations: \(error)")
@@ -88,7 +88,7 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
         let predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", latitude, longitude)
         var pin: Pin?
         do {
-            try pin = coreDataStack.fetchPin(predicate, entityName: Pin.name)
+            try pin = CoreDataStack.shared().fetchPin(predicate, entityName: Pin.name)
         } catch {
             print("\(#function) error:\(error)")
             showInfo(withTitle: "Error", withMessage: "Error while fetching location: \(error)")
@@ -149,7 +149,7 @@ extension TravelMapViewController {
         if let pin = loadPin(latitude: lat, longitude: lon) {
             if isEditing {
                 mapView.removeAnnotation(annotation)
-                coreDataStack.context.delete(pin)
+                CoreDataStack.shared().context.delete(pin)
                 save()
                 return
             }

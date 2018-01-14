@@ -12,5 +12,6 @@ class PhotoViewCell: UICollectionViewCell {
     static let identifier = "PhotoViewCell"
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
 }

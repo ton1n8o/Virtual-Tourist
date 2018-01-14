@@ -127,16 +127,22 @@
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YoM-Iw-3yG">
                                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                         </imageView>
+                                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="MfC-5U-QHA">
+                                                            <rect key="frame" x="65" y="65" width="20" height="20"/>
+                                                        </activityIndicatorView>
                                                     </subviews>
                                                 </view>
                                                 <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
+                                                    <constraint firstItem="MfC-5U-QHA" firstAttribute="centerY" secondItem="VsQ-6O-1tC" secondAttribute="centerY" id="5lE-2p-eJF"/>
+                                                    <constraint firstItem="MfC-5U-QHA" firstAttribute="centerX" secondItem="VsQ-6O-1tC" secondAttribute="centerX" id="6DL-o1-I2E"/>
                                                     <constraint firstAttribute="trailing" secondItem="YoM-Iw-3yG" secondAttribute="trailing" id="6MC-ca-OCt"/>
                                                     <constraint firstAttribute="bottom" secondItem="YoM-Iw-3yG" secondAttribute="bottom" id="8iT-en-V2M"/>
                                                     <constraint firstItem="YoM-Iw-3yG" firstAttribute="top" secondItem="VsQ-6O-1tC" secondAttribute="top" id="rdU-bL-anx"/>
                                                     <constraint firstItem="YoM-Iw-3yG" firstAttribute="leading" secondItem="VsQ-6O-1tC" secondAttribute="leading" id="xOc-Ub-Db7"/>
                                                 </constraints>
                                                 <connections>
+                                                    <outlet property="activityIndicator" destination="MfC-5U-QHA" id="ItG-Wx-pmg"/>
                                                     <outlet property="imageView" destination="YoM-Iw-3yG" id="Hbo-Ch-Eb4"/>
                                                 </connections>
                                             </collectionViewCell>

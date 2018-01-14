@@ -14,13 +14,9 @@ extension UIViewController {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    var coreDataStack: CoreDataStack {
-        return appDelegate.stack
-    }
-    
     func save() {
         do {
-            try coreDataStack.saveContext()
+            try CoreDataStack.shared().saveContext()
         } catch {
             showInfo(withTitle: "Error", withMessage: "Error while saving Pin location: \(error)")
         }

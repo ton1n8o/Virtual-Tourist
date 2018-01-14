@@ -77,9 +77,11 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.identifier, for: indexPath) as! PhotoViewCell
         let photo = fetchedResultsController.object(at: indexPath)
-        cell.imageView.image = UIImage(data: Data(referencing: photo.image!))
+        configImage(using: cell, photo: photo)
+        
         return cell
     }
     
@@ -104,6 +106,27 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             photoViewCell.imageView.alpha = 0.2
         } else {
             photoViewCell.imageView.alpha = 1.0
+        }
+    }
+    
+    private func configImage(using cell: PhotoViewCell, photo: Photo) {
+        if photo.image == nil {
+            cell.activityIndicator.startAnimating()
+            if let imageUrl = photo.imageUrl {
+                Client.shared().downloadImage(imageUrl: imageUrl) { (data, error) in
+                    if let data = data {
+                        self.performUIUpdatesOnMain {
+                            cell.imageView.image = UIImage(data: data)
+                            photo.image = NSData(data: data)
+                            self.save()
+                            cell.activityIndicator.stopAnimating()
+                        }
+                    }
+                }
+            }
+        } else {
+            cell.activityIndicator.stopAnimating()
+            cell.imageView.image = UIImage(data: Data(referencing: photo.image!))
         }
     }
     
