@@ -123,6 +123,7 @@ extension TravelMapViewController {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = false
             pinView!.pinTintColor = .red
+            pinView!.animatesDrop = true
         } else {
             pinView!.annotation = annotation
         }

@@ -26,6 +26,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var deletedIndexPaths: [IndexPath]!
     var updatedIndexPaths: [IndexPath]!
     
+    var presentingAlert = false
     var pin: Pin?
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     

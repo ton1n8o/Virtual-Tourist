@@ -82,11 +82,14 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         cell.imageView.image = nil
         cell.activityIndicator.startAnimating()
         
-        let photo = fetchedResultsController.object(at: indexPath)
-        cell.imageUrl = photo.imageUrl!
-        configImage(using: cell, photo: photo, cv: collectionView, index: indexPath)
-        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let photo = fetchedResultsController.object(at: indexPath)
+        let photoViewCell = cell as! PhotoViewCell
+        photoViewCell.imageUrl = photo.imageUrl!
+        configImage(using: photoViewCell, photo: photo, collectionView: collectionView, index: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -102,10 +105,8 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         }
         
         let photo = fetchedResultsController.object(at: forItemAt)
-        if photo.image == nil {
-            if let imageUrl = photo.imageUrl {
-                Client.shared().cancelDownload(imageUrl)
-            }
+        if let imageUrl = photo.imageUrl {
+            Client.shared().cancelDownload(imageUrl)
         }
     }
     
@@ -127,7 +128,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         }
     }
     
-    private func configImage(using cell: PhotoViewCell, photo: Photo, cv: UICollectionView, index: IndexPath) {
+    private func configImage(using cell: PhotoViewCell, photo: Photo, collectionView: UICollectionView, index: IndexPath) {
         if let imageData = photo.image {
             cell.activityIndicator.stopAnimating()
             cell.imageView.image = UIImage(data: Data(referencing: imageData))
@@ -138,15 +139,15 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                     if let _ = error {
                         self.performUIUpdatesOnMain {
                             cell.activityIndicator.stopAnimating()
-                            self.showInfo(withTitle: "Error", withMessage: "Error while fetching image for URL: \(imageUrl)", action: nil)
+                            self.errorForImageUrl(imageUrl)
                         }
                         return
                     } else if let data = data {
                         self.performUIUpdatesOnMain {
                             
-                            if let newCell = cv.cellForItem(at: index) as? PhotoViewCell {
-                                if newCell.imageUrl == imageUrl {
-                                    newCell.imageView.image = UIImage(data: data)
+                            if let currentCell = collectionView.cellForItem(at: index) as? PhotoViewCell {
+                                if currentCell.imageUrl == imageUrl {
+                                    currentCell.imageView.image = UIImage(data: data)
                                     cell.activityIndicator.stopAnimating()
                                 }
                             }
@@ -159,6 +160,15 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                 }
             }
         }
+    }
+    
+    private func errorForImageUrl(_ imageUrl: String) {
+        if !self.presentingAlert {
+            self.showInfo(withTitle: "Error", withMessage: "Error while fetching image for URL: \(imageUrl)", action: {
+                self.presentingAlert = false
+            })
+        }
+        self.presentingAlert = true
     }
     
 }

@@ -36,7 +36,7 @@ class Client {
             , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
             , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
-            , Constants.FlickrParameterKeys.PhotosPerPage  : "50"
+            , Constants.FlickrParameterKeys.PhotosPerPage  : "30"
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in
@@ -76,7 +76,9 @@ class Client {
     
     func cancelDownload(_ imageUrl: String) {
         tasks[imageUrl]?.cancel()
-        tasks.removeValue(forKey: imageUrl)
+        if tasks.removeValue(forKey: imageUrl) != nil {
+            print("\(#function) task canceled: \(imageUrl)")
+        }
     }
     
 }
