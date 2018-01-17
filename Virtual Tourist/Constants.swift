@@ -37,6 +37,7 @@ struct Constants {
         static let SafeSearch = "safe_search"
         static let BoundingBox = "bbox"
         static let PhotosPerPage = "per_page"
+        static let Accuracy = "accuracy"
     }
     
     // MARK: - Flickr Parameter Values
@@ -47,6 +48,8 @@ struct Constants {
         static let ResponseFormat = "json"
         static let DisableJSONCallback = "1" /* 1 means "yes" */
         static let MediumURL = "url_n"
-        static let UseSafeSearch = "1"
+        static let UseSafeSearch = "1" /* 1 means safe content */
+        static let AccuracyCityLevel = "11"
+        static let AccuracyStreetLevel = "16"
     }
 }

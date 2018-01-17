@@ -37,6 +37,7 @@ class Client {
             , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
             , Constants.FlickrParameterKeys.PhotosPerPage  : "30"
+            , Constants.FlickrParameterKeys.Accuracy       : Constants.FlickrParameterValues.AccuracyCityLevel
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in

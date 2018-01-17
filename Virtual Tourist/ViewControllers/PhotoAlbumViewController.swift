@@ -18,6 +18,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout?
     @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var labelStatus: UILabel!
     
     // MARK: - Variables
     
@@ -38,6 +40,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
         mapView.isZoomEnabled = false
         mapView.isScrollEnabled = false
+        
+        // we're setting an empty text in it.
+        updateStatusLabel("")
         
         guard let pin = pin else {
             return
@@ -91,14 +96,32 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         let lat = Double(pin.latitude!)!
         let lon = Double(pin.longitude!)!
         
+        activityIndicator.startAnimating()
+        self.updateStatusLabel("Fetching photos ...")
+        
         Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParsed, error) in
+            self.performUIUpdatesOnMain {
+                self.activityIndicator.stopAnimating()
+                self.labelStatus.text = ""
+            }
             if let photosParsed = photosParsed {
-                print("\(#function) Downloading \(photosParsed.photos.photo.count) photos.")
+                let totalPhotos = photosParsed.photos.photo.count
+                print("\(#function) Downloading \(totalPhotos) photos.")
                 self.storePhotos(photosParsed.photos.photo, forPin: pin)
+                if totalPhotos == 0 {
+                    self.updateStatusLabel("No photos found for this location 😢")
+                }
             } else if let error = error {
                 print("\(#function) error:\(error)")
-                self.showInfo(withTitle: "Error", withMessage: "Error while fetching Photos: \(error)")
+                self.showInfo(withTitle: "Error", withMessage: error.localizedDescription)
+                self.updateStatusLabel("Something went wrong, please try again 🧐")
             }
+        }
+    }
+    
+    private func updateStatusLabel(_ text: String) {
+        self.performUIUpdatesOnMain {
+            self.labelStatus.text = text
         }
     }
     
@@ -156,7 +179,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
     }
     
-    func deletePhotos() {
+    private func deletePhotos() {
         if selectedIndexes.isEmpty {
             // delete all photos
             for photos in fetchedResultsController.fetchedObjects! {

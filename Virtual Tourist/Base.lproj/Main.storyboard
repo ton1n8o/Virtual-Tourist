@@ -169,10 +169,24 @@
                                     </toolbar>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="CId-GJ-Kb8">
+                                <rect key="frame" x="188.66666666666666" y="419.66666666666669" width="37" height="37"/>
+                                <color key="color" red="0.61568627450000002" green="0.61568627450000002" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNN-v2-JAv">
+                                <rect key="frame" x="186.33333333333334" y="464.66666666666669" width="41.666666666666657" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="CId-GJ-Kb8" firstAttribute="centerY" secondItem="Qew-ml-CTV" secondAttribute="centerY" id="1Iy-S0-10j"/>
+                            <constraint firstItem="cNN-v2-JAv" firstAttribute="top" secondItem="CId-GJ-Kb8" secondAttribute="bottom" constant="8" id="6YX-4j-ruA"/>
+                            <constraint firstItem="CId-GJ-Kb8" firstAttribute="centerX" secondItem="Qew-ml-CTV" secondAttribute="centerX" id="B69-Yv-LnB"/>
                             <constraint firstItem="EA5-VA-BUn" firstAttribute="trailing" secondItem="9SM-Uz-rXi" secondAttribute="trailing" id="bBX-nb-mav"/>
+                            <constraint firstItem="cNN-v2-JAv" firstAttribute="centerX" secondItem="CId-GJ-Kb8" secondAttribute="centerX" id="dMw-kL-z5A"/>
                             <constraint firstAttribute="bottom" secondItem="9SM-Uz-rXi" secondAttribute="bottom" id="jvC-Jh-TQ0"/>
                             <constraint firstItem="9SM-Uz-rXi" firstAttribute="top" secondItem="EA5-VA-BUn" secondAttribute="top" id="lrQ-zX-WLy"/>
                             <constraint firstItem="9SM-Uz-rXi" firstAttribute="leading" secondItem="EA5-VA-BUn" secondAttribute="leading" id="rsu-Kw-aQ9"/>
@@ -180,9 +194,11 @@
                         <viewLayoutGuide key="safeArea" id="EA5-VA-BUn"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="CId-GJ-Kb8" id="gcf-Qc-E5v"/>
                         <outlet property="button" destination="bLQ-x0-jGd" id="xH9-YR-epW"/>
                         <outlet property="collectionView" destination="Qew-ml-CTV" id="aM5-Rj-aoa"/>
                         <outlet property="flowLayout" destination="KY6-Te-K65" id="wpd-Y9-iHd"/>
+                        <outlet property="labelStatus" destination="cNN-v2-JAv" id="WlA-Fb-gRj"/>
                         <outlet property="mapView" destination="yrI-ck-ekw" id="Nqr-hs-Cca"/>
                     </connections>
                 </viewController>
