@@ -13,9 +13,9 @@
 		02298AC51FD8221F00320302 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02298AC41FD8221F00320302 /* Assets.xcassets */; };
 		02298AC81FD8221F00320302 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02298AC61FD8221F00320302 /* LaunchScreen.storyboard */; };
 		02298AD21FD824A300320302 /* TravelMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02298AD11FD824A300320302 /* TravelMapViewController.swift */; };
-		0249DBD81FE541F10098D510 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249DBD71FE541F10098D510 /* Constants.swift */; };
 		0249DBDA1FE543400098D510 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249DBD91FE543400098D510 /* Client.swift */; };
 		02A70D0A1FF3B036003AAEFF /* PhotosParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A70D091FF3B036003AAEFF /* PhotosParser.swift */; };
+		02C1BFD02014DCA4007D93A5 /* Client+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C1BFCF2014DCA4007D93A5 /* Client+Extension.swift */; };
 		02C94A891FE6A6DF0078CF2C /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */; };
 		02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */; };
 		02D15AC91FFBC7F30069737B /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D15AC81FFBC7F30069737B /* PhotoViewCell.swift */; };
@@ -36,9 +36,9 @@
 		02298AC71FD8221F00320302 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02298AC91FD8221F00320302 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02298AD11FD824A300320302 /* TravelMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelMapViewController.swift; sourceTree = "<group>"; };
-		0249DBD71FE541F10098D510 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0249DBD91FE543400098D510 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		02A70D091FF3B036003AAEFF /* PhotosParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosParser.swift; sourceTree = "<group>"; };
+		02C1BFCF2014DCA4007D93A5 /* Client+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Client+Extension.swift"; sourceTree = "<group>"; };
 		02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		02CC7D3D1FED2849003301A5 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		02D15AC81FFBC7F30069737B /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
@@ -81,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				02298ABA1FD8221F00320302 /* AppDelegate.swift */,
-				0249DBD71FE541F10098D510 /* Constants.swift */,
 				02298AC41FD8221F00320302 /* Assets.xcassets */,
 				02C94A881FE6A6DE0078CF2C /* CoreDataStack.swift */,
 				02298AC11FD8221F00320302 /* Virtual_Tourist.xcdatamodeld */,
@@ -111,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				0249DBD91FE543400098D510 /* Client.swift */,
+				02C1BFCF2014DCA4007D93A5 /* Client+Extension.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -223,9 +223,9 @@
 				02C94A891FE6A6DF0078CF2C /* CoreDataStack.swift in Sources */,
 				0249DBDA1FE543400098D510 /* Client.swift in Sources */,
 				02DC89A3200ABD9A00086A90 /* Photo.swift in Sources */,
+				02C1BFD02014DCA4007D93A5 /* Client+Extension.swift in Sources */,
 				02EBC2231FFA70EA0073CD3A /* PhotoAlbumViewController+Extension.swift in Sources */,
 				02DC89A5200ABD9A00086A90 /* Pin.swift in Sources */,
-				0249DBD81FE541F10098D510 /* Constants.swift in Sources */,
 				02CC7D3E1FED2849003301A5 /* PhotoAlbumViewController.swift in Sources */,
 				02A70D0A1FF3B036003AAEFF /* PhotosParser.swift in Sources */,
 				02DC89A6200ABD9A00086A90 /* Pin+CoreDataProperties.swift in Sources */,

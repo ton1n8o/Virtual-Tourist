@@ -1,16 +1,14 @@
 //
-//  Constants.swift
+//  Client+Extension.swift
 //  Virtual Tourist
 //
-//  Created by Antonio on 12/16/17.
-//  Copyright © 2017 Antônio Carlos. All rights reserved.
+//  Created by Antonio on 1/21/18.
+//  Copyright © 2018 Antônio Carlos. All rights reserved.
 //
 
 import Foundation
 
-// MARK: - Constants
-
-struct Constants {
+extension Client {
     
     // MARK: - Flickr
     

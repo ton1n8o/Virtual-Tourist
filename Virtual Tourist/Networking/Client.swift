@@ -29,7 +29,7 @@ class Client {
         // choosing a random page.
         var page: Int {
             if let totalPages = totalPages {
-                let page = min(totalPages, 4000/Constants.FlickrParameterValues.PhotosPerPage)
+                let page = min(totalPages, 4000/FlickrParameterValues.PhotosPerPage)
                 return Int(arc4random_uniform(UInt32(page)) + 1)
             }
             return 1
@@ -37,15 +37,15 @@ class Client {
         let bbox = bboxString(latitude: latitude, longitude: longitude)
         
         let parameters = [
-            Constants.FlickrParameterKeys.Method           : Constants.FlickrParameterValues.SearchMethod
-            , Constants.FlickrParameterKeys.APIKey         : Constants.FlickrParameterValues.APIKey
-            , Constants.FlickrParameterKeys.Format         : Constants.FlickrParameterValues.ResponseFormat
-            , Constants.FlickrParameterKeys.Extras         : Constants.FlickrParameterValues.MediumURL
-            , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
-            , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
-            , Constants.FlickrParameterKeys.BoundingBox    : bbox
-            , Constants.FlickrParameterKeys.PhotosPerPage  : "\(Constants.FlickrParameterValues.PhotosPerPage)"
-            , Constants.FlickrParameterKeys.Page           : "\(page)"
+            FlickrParameterKeys.Method           : FlickrParameterValues.SearchMethod
+            , FlickrParameterKeys.APIKey         : FlickrParameterValues.APIKey
+            , FlickrParameterKeys.Format         : FlickrParameterValues.ResponseFormat
+            , FlickrParameterKeys.Extras         : FlickrParameterValues.MediumURL
+            , FlickrParameterKeys.NoJSONCallback : FlickrParameterValues.DisableJSONCallback
+            , FlickrParameterKeys.SafeSearch     : FlickrParameterValues.UseSafeSearch
+            , FlickrParameterKeys.BoundingBox    : bbox
+            , FlickrParameterKeys.PhotosPerPage  : "\(FlickrParameterValues.PhotosPerPage)"
+            , FlickrParameterKeys.Page           : "\(page)"
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in
@@ -164,9 +164,9 @@ extension Client {
     private func buildURLFromParameters(_ parameters: [String: String], withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
-        components.scheme = Constants.Flickr.APIScheme
-        components.host = Constants.Flickr.APIHost
-        components.path = Constants.Flickr.APIPath + (withPathExtension ?? "")
+        components.scheme = Flickr.APIScheme
+        components.host = Flickr.APIHost
+        components.path = Flickr.APIPath + (withPathExtension ?? "")
         components.queryItems = [URLQueryItem]()
         
         for (key, value) in parameters {
@@ -179,10 +179,10 @@ extension Client {
     
     private func bboxString(latitude: Double, longitude: Double) -> String {
         // ensure bbox is bounded by minimum and maximums
-        let minimumLon = max(longitude - Constants.Flickr.SearchBBoxHalfWidth, Constants.Flickr.SearchLonRange.0)
-        let minimumLat = max(latitude - Constants.Flickr.SearchBBoxHalfHeight, Constants.Flickr.SearchLatRange.0)
-        let maximumLon = min(longitude + Constants.Flickr.SearchBBoxHalfWidth, Constants.Flickr.SearchLonRange.1)
-        let maximumLat = min(latitude + Constants.Flickr.SearchBBoxHalfHeight, Constants.Flickr.SearchLatRange.1)
+        let minimumLon = max(longitude - Flickr.SearchBBoxHalfWidth, Flickr.SearchLonRange.0)
+        let minimumLat = max(latitude  - Flickr.SearchBBoxHalfHeight, Flickr.SearchLatRange.0)
+        let maximumLon = min(longitude + Flickr.SearchBBoxHalfWidth, Flickr.SearchLonRange.1)
+        let maximumLat = min(latitude  + Flickr.SearchBBoxHalfHeight, Flickr.SearchLatRange.1)
         return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
     }
     
