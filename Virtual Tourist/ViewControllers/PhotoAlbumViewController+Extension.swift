@@ -93,9 +93,9 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! PhotoViewCell
-        configItemSelected(cell, atIndexPath: indexPath)
-        updateBottomButton()
+        let photoToDelete = fetchedResultsController.object(at: indexPath)
+        CoreDataStack.shared().context.delete(photoToDelete)
+        save()
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying: UICollectionViewCell, forItemAt: IndexPath) {
@@ -111,22 +111,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     // MARK: - Helpers
-    
-    private func configItemSelected(_ photoViewCell: PhotoViewCell, atIndexPath indexPath: IndexPath) {
-        
-        // Whenever a cell is tapped we will toggle its presence in the selectedIndexes array
-        if let index = selectedIndexes.index(of: indexPath) {
-            selectedIndexes.remove(at: index)
-        } else {
-            selectedIndexes.append(indexPath)
-        }
-        
-        if selectedIndexes.contains(indexPath) {
-            photoViewCell.imageView.alpha = 0.2
-        } else {
-            photoViewCell.imageView.alpha = 1.0
-        }
-    }
     
     private func configImage(using cell: PhotoViewCell, photo: Photo, collectionView: UICollectionView, index: IndexPath) {
         if let imageData = photo.image {

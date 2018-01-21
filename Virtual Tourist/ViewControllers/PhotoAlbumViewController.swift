@@ -64,7 +64,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Actions
     
     @IBAction func deleteAction(_ sender: Any) {
-        deletePhotos()
+        // delete all photos
+        for photos in fetchedResultsController.fetchedObjects! {
+            CoreDataStack.shared().context.delete(photos)
+        }
+        save()
+        fetchPhotosFromAPI(pin!)
     }
     
     // MARK: - Helpers
@@ -181,33 +186,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout?.minimumLineSpacing = space
         flowLayout?.itemSize = CGSize(width: dimension, height: dimension)
         flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
-    }
-    
-    private func deletePhotos() {
-        if selectedIndexes.isEmpty {
-            // delete all photos
-            for photos in fetchedResultsController.fetchedObjects! {
-                CoreDataStack.shared().context.delete(photos)
-            }
-            fetchPhotosFromAPI(pin!)
-        } else {
-            // delete only photos selected
-            var photosToDelete = [Photo]()
-            
-            for indexPath in selectedIndexes {
-                photosToDelete.append(fetchedResultsController.object(at: indexPath))
-            }
-            
-            for photo in photosToDelete {
-                CoreDataStack.shared().context.delete(photo)
-            }
-            
-        }
-        selectedIndexes = [IndexPath]()
-        updateBottomButton()
-        for cell in collectionView.visibleCells {
-            (cell as! PhotoViewCell).imageView.alpha = 1.0
-        }
     }
     
     func updateBottomButton() {
