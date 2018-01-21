@@ -19,7 +19,7 @@ struct Photos: Codable {
 
 struct PhotoParser: Codable {
     
-    let url: String
+    let url: String?
     let title: String
     
     enum CodingKeys: String, CodingKey {

@@ -29,7 +29,8 @@ class Client {
         // choosing a random page.
         var page: Int {
             if let totalPages = totalPages {
-                return Int(arc4random_uniform(UInt32(totalPages)) + 1)
+                let page = min(totalPages, 4000/Constants.FlickrParameterValues.PhotosPerPage)
+                return Int(arc4random_uniform(UInt32(page)) + 1)
             }
             return 1
         }
@@ -43,8 +44,7 @@ class Client {
             , Constants.FlickrParameterKeys.NoJSONCallback : Constants.FlickrParameterValues.DisableJSONCallback
             , Constants.FlickrParameterKeys.SafeSearch     : Constants.FlickrParameterValues.UseSafeSearch
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
-            , Constants.FlickrParameterKeys.PhotosPerPage  : "30"
-            , Constants.FlickrParameterKeys.Accuracy       : Constants.FlickrParameterValues.AccuracyCityLevel
+            , Constants.FlickrParameterKeys.PhotosPerPage  : "\(Constants.FlickrParameterValues.PhotosPerPage)"
             , Constants.FlickrParameterKeys.Page           : "\(page)"
         ]
         

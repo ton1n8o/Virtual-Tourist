@@ -16,6 +16,9 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var footerView: UIView!
     
+    // MARK: - Variables
+    var pinAnnotation: MKPointAnnotation? = nil
+    
     // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
@@ -45,24 +48,29 @@ class TravelMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func addPinGesture(_ sender: UILongPressGestureRecognizer) {
         
+        let location = sender.location(in: mapView)
+        let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
+        
         if sender.state == .began {
             
-            let location = sender.location(in: mapView)
-            let locCoord = mapView.convert(location, toCoordinateFrom: mapView)
+            pinAnnotation = MKPointAnnotation()
+            pinAnnotation!.coordinate = locCoord
             
             print("\(#function) Coordinate: \(locCoord.latitude),\(locCoord.longitude)")
         
+            mapView.addAnnotation(pinAnnotation!)
+            
+        } else if sender.state == .changed {
+            pinAnnotation!.coordinate = locCoord
+        } else if sender.state == .ended {
+            
             _ = Pin(
-                latitude: String(locCoord.latitude),
-                longitude: String(locCoord.longitude),
+                latitude: String(pinAnnotation!.coordinate.latitude),
+                longitude: String(pinAnnotation!.coordinate.longitude),
                 context: CoreDataStack.shared().context
             )
             save()
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = locCoord
-            
-            mapView.addAnnotation(annotation)
         }
     }
     

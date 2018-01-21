@@ -134,8 +134,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         
         for photo in photos {
             performUIUpdatesOnMain {
-                _ = Photo(title: photo.title, imageUrl: photo.url, forPin: forPin, context: CoreDataStack.shared().context)
-                self.save()
+                if let url = photo.url {
+                    _ = Photo(title: photo.title, imageUrl: url, forPin: forPin, context: CoreDataStack.shared().context)
+                    self.save()
+                }
             }
         }
     }

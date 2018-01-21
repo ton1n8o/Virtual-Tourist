@@ -50,6 +50,7 @@ struct Constants {
         static let DisableJSONCallback = "1" /* 1 means "yes" */
         static let MediumURL = "url_n"
         static let UseSafeSearch = "1" /* 1 means safe content */
+        static let PhotosPerPage = 30
         static let AccuracyCityLevel = "11"
         static let AccuracyStreetLevel = "16"
     }
