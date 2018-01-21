@@ -38,6 +38,7 @@ struct Constants {
         static let BoundingBox = "bbox"
         static let PhotosPerPage = "per_page"
         static let Accuracy = "accuracy"
+        static let Page = "page"
     }
     
     // MARK: - Flickr Parameter Values

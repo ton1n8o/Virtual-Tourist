@@ -27,6 +27,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var insertedIndexPaths: [IndexPath]!
     var deletedIndexPaths: [IndexPath]!
     var updatedIndexPaths: [IndexPath]!
+    var totalPages: Int? = nil
     
     var presentingAlert = false
     var pin: Pin?
@@ -99,12 +100,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         activityIndicator.startAnimating()
         self.updateStatusLabel("Fetching photos ...")
         
-        Client.shared().searchBy(latitude: lat, longitude: lon) { (photosParsed, error) in
+        Client.shared().searchBy(latitude: lat, longitude: lon, totalPages: totalPages) { (photosParsed, error) in
             self.performUIUpdatesOnMain {
                 self.activityIndicator.stopAnimating()
                 self.labelStatus.text = ""
             }
             if let photosParsed = photosParsed {
+                self.totalPages = photosParsed.photos.pages
                 let totalPhotos = photosParsed.photos.photo.count
                 print("\(#function) Downloading \(totalPhotos) photos.")
                 self.storePhotos(photosParsed.photos.photo, forPin: pin)

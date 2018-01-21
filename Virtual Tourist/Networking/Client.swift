@@ -24,8 +24,15 @@ class Client {
         return Singleton.shared
     }
     
-    func searchBy(latitude: Double, longitude: Double, completion: @escaping (_ result: PhotosParser?, _ error: Error?) -> Void) {
+    func searchBy(latitude: Double, longitude: Double, totalPages: Int?, completion: @escaping (_ result: PhotosParser?, _ error: Error?) -> Void) {
         
+        // choosing a random page.
+        var page: Int {
+            if let totalPages = totalPages {
+                return Int(arc4random_uniform(UInt32(totalPages)) + 1)
+            }
+            return 1
+        }
         let bbox = bboxString(latitude: latitude, longitude: longitude)
         
         let parameters = [
@@ -38,6 +45,7 @@ class Client {
             , Constants.FlickrParameterKeys.BoundingBox    : bbox
             , Constants.FlickrParameterKeys.PhotosPerPage  : "30"
             , Constants.FlickrParameterKeys.Accuracy       : Constants.FlickrParameterValues.AccuracyCityLevel
+            , Constants.FlickrParameterKeys.Page           : "\(page)"
         ]
         
         _ = taskForGETMethod(parameters: parameters) { (data, error) in
